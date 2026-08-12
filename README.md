@@ -32,7 +32,7 @@ No requiere backend, base de datos remota ni autenticación: todos los datos viv
 
 | Desktop | Mobile |
 | --- | --- |
-| ![Dashboard en escritorio](docs/screenshots/dashboard-desktop.png) | ![Dashboard en móvil](docs/screenshots/dashboard-mobile.png) |
+| ![Dashboard en escritorio](docs/screenshots/preview-desktop.png) | ![Dashboard en móvil](docs/screenshots/preview-mobile.png) |
 
 El layout es completamente responsivo: el sidebar de navegación es persistente y retráctil en escritorio, y se convierte en un drawer deslizable en móvil; las tablas se reorganizan en tarjetas apiladas y las grillas de tarjetas pasan de 4 columnas a 1–2 según el ancho disponible.
 
