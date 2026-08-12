@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import { getCategoryById, formatCurrency } from '@/lib/finance'
 
-const PIE_COLORS = ['#1B3A6B', '#2952A3', '#C9B99A', '#E8C97A', '#BDB5A8', '#8BA8B5', '#A89070']
+const PIE_COLORS = ['#1B3A6B', '#059669', '#2563EB', '#D97706', '#7C3AED', '#0EA5E9', '#F43F5E']
 
 interface CategoryPieChartProps {
   byCategory: Record<string, number> | undefined

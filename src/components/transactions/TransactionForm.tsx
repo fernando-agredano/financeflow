@@ -186,8 +186,8 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
             sx={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1.5,
               p: 1.75, borderRadius: '12px',
-              background: pendingIsIncome ? '#E8F5EE' : '#FDEAEA',
-              border: `0.5px solid ${pendingIsIncome ? '#1A6B4530' : '#8B202030'}`,
+              background: pendingIsIncome ? '#E3F6EC' : '#FDEAEA',
+              border: `0.5px solid ${pendingIsIncome ? '#05966930' : '#8B202030'}`,
             }}
           >
             <Box sx={{ minWidth: 0 }}>
@@ -198,7 +198,7 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
                 {pendingCategory?.name ?? pending.categoryId} · {formatDate(pending.date)}
               </Typography>
             </Box>
-            <Typography sx={{ fontSize: 16, fontWeight: 700, color: pendingIsIncome ? '#0F4A2D' : '#5E1515', whiteSpace: 'nowrap' }}>
+            <Typography sx={{ fontSize: 16, fontWeight: 700, color: pendingIsIncome ? '#059669' : '#5E1515', whiteSpace: 'nowrap' }}>
               {pendingIsIncome ? '+' : '-'}{formatCurrency(pending.amount)}
             </Typography>
           </Box>

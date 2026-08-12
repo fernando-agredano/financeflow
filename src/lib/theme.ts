@@ -6,7 +6,7 @@ export const theme = createTheme({
     mode: 'light',
     primary:    { main: '#1B3A6B', light: '#2952A3', dark: '#0F2449', contrastText: '#FEFCF8' },
     secondary:  { main: '#7A5A00', light: '#B08A20', dark: '#543D00', contrastText: '#FEFCF8' },
-    background: { default: '#F5F0E8', paper: '#FEFCF8' },
+    background: { default: '#F7F6F3', paper: '#FEFCF8' },
     text:       { primary: '#1C1917', secondary: '#6B6560', disabled: '#9C9589' },
     divider: '#DDD8CE',
     success: { main: '#1A6B45', light: '#E8F5EE', dark: '#0F4A2D' },
@@ -29,7 +29,7 @@ export const theme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        body: { background: '#F5F0E8', minHeight: '100vh' },
+        body: { background: '#F7F6F3', minHeight: '100vh' },
         '::-webkit-scrollbar': { width: 6, height: 6 },
         '::-webkit-scrollbar-track': { background: 'transparent' },
         '::-webkit-scrollbar-thumb': { background: '#C8C0B0', borderRadius: 99 },

@@ -105,7 +105,7 @@ export default function BudgetsPage() {
           const over = spent > budget.limit
           const nearly = pct > 80 && !over
           const cat = expenseCategories.find((c) => c.id === budget.categoryId)
-          const barColor = over ? '#8B2020' : nearly ? '#7A4F00' : '#1B3A6B'
+          const barColor = over ? '#8B2020' : nearly ? '#D97706' : '#059669'
 
           return (
             <Card key={budget.id} elevation={0}>
@@ -114,7 +114,7 @@ export default function BudgetsPage() {
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                     {over
                       ? <WarningAmberOutlinedIcon sx={{ fontSize: 16, color: '#8B2020' }} />
-                      : <CheckCircleOutlineIcon sx={{ fontSize: 16, color: '#1A6B45' }} />
+                      : <CheckCircleOutlineIcon sx={{ fontSize: 16, color: '#059669' }} />
                     }
                     <Typography sx={{ fontSize: 13, fontWeight: 500, color: '#1C1917' }}>{cat?.name}</Typography>
                   </Box>
@@ -130,7 +130,7 @@ export default function BudgetsPage() {
                   </Typography>
                 </Box>
                 <LinearProgress variant="determinate" value={pct} sx={{ mb: 0.75, '& .MuiLinearProgress-bar': { background: barColor } }} />
-                <Typography sx={{ fontSize: 11, color: over ? '#8B2020' : nearly ? '#7A4F00' : '#9C9589' }}>
+                <Typography sx={{ fontSize: 11, color: over ? '#8B2020' : nearly ? '#D97706' : '#9C9589' }}>
                   {over
                     ? `Excedido por ${formatCurrency(spent - budget.limit)}`
                     : `Disponible: ${formatCurrency(budget.limit - spent)} (${(100 - pct).toFixed(0)}%)`

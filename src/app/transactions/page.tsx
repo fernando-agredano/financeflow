@@ -143,8 +143,12 @@ export default function TransactionsPage() {
                       <Box sx={{ display: { xs: 'none', sm: 'grid' }, gridTemplateColumns: TABLE_COLUMNS, gap: 1, px: 2, py: 1.25, alignItems: 'center' }}>
                         <Typography sx={{ fontSize: 12, color: '#9C9589' }}>{formatDate(tx.date)}</Typography>
                         <Typography sx={{ fontSize: 12, fontWeight: 500, color: '#1C1917', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tx.description}</Typography>
-                        <Chip label={cat?.name ?? tx.categoryId} size="small" color="default" sx={{ fontSize: 10, height: 20, maxWidth: 110 }} />
-                        <Typography sx={{ fontSize: 13, fontWeight: 500, color: isIncome ? '#1A6B45' : '#8B2020' }}>
+                        <Chip
+                          label={cat?.name ?? tx.categoryId}
+                          size="small"
+                          sx={{ fontSize: 10, height: 20, maxWidth: 110, background: `${cat?.color ?? '#9C9589'}18`, color: cat?.color ?? '#6B6560', border: `0.5px solid ${cat?.color ?? '#9C9589'}40`, fontWeight: 500 }}
+                        />
+                        <Typography sx={{ fontSize: 13, fontWeight: 500, color: isIncome ? '#059669' : '#8B2020' }}>
                           {isIncome ? '+' : '-'}{formatCurrency(tx.amount)}
                         </Typography>
                         <Tooltip title="Eliminar" arrow>
@@ -160,13 +164,17 @@ export default function TransactionsPage() {
                           <Typography sx={{ fontSize: 13, fontWeight: 500, color: '#1C1917', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0 }}>
                             {tx.description}
                           </Typography>
-                          <Typography sx={{ fontSize: 13, fontWeight: 600, color: isIncome ? '#1A6B45' : '#8B2020', flexShrink: 0, whiteSpace: 'nowrap' }}>
+                          <Typography sx={{ fontSize: 13, fontWeight: 600, color: isIncome ? '#059669' : '#8B2020', flexShrink: 0, whiteSpace: 'nowrap' }}>
                             {isIncome ? '+' : '-'}{formatCurrency(tx.amount)}
                           </Typography>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, minWidth: 0 }}>
-                            <Chip label={cat?.name ?? tx.categoryId} size="small" color="default" sx={{ fontSize: 10, height: 20, maxWidth: 110 }} />
+                            <Chip
+                              label={cat?.name ?? tx.categoryId}
+                              size="small"
+                              sx={{ fontSize: 10, height: 20, maxWidth: 110, background: `${cat?.color ?? '#9C9589'}18`, color: cat?.color ?? '#6B6560', border: `0.5px solid ${cat?.color ?? '#9C9589'}40`, fontWeight: 500 }}
+                            />
                             <Typography sx={{ fontSize: 11, color: '#9C9589', whiteSpace: 'nowrap' }}>{formatDate(tx.date)}</Typography>
                           </Box>
                           <IconButton size="small" onClick={() => tx.id && txActions.delete(tx.id)} sx={{ p: 0.5, color: '#C8C0B0', '&:hover': { color: '#8B2020' }, flexShrink: 0 }}>

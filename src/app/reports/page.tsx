@@ -56,7 +56,7 @@ export default function ReportsPage() {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             {topExpenses.map((e, i) => {
               const pct = totalExpense > 0 ? (e.amount / totalExpense) * 100 : 0
-              const colors = ['#1B3A6B', '#2952A3', '#C9B99A', '#E8C97A', '#BDB5A8']
+              const colors = ['#1B3A6B', '#059669', '#2563EB', '#D97706', '#7C3AED']
               return (
                 <Box key={e.id}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75, gap: 1 }}>

@@ -43,7 +43,7 @@ export function BudgetProgress({ budgets, byCategory }: BudgetProgressProps) {
                 const pct = Math.min((spent / budget.limit) * 100, 100)
                 const over = spent > budget.limit
                 const cat = getCategoryById(budget.categoryId)
-                const barColor = over ? '#8B2020' : pct > 80 ? '#7A4F00' : '#1B3A6B'
+                const barColor = over ? '#8B2020' : pct > 80 ? '#D97706' : '#059669'
 
                 return (
                   <Box key={budget.id ?? budget.categoryId}>

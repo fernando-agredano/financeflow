@@ -5,7 +5,7 @@ import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { BrandMark, BRAND_ACCENT_TEXT_SX } from './BrandMark'
+import { BrandMark, BRAND_ACCENT_TEXT_SX, BRAND_WORDMARK_CLASS } from './BrandMark'
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
 import SwapHorizOutlinedIcon from '@mui/icons-material/SwapHorizOutlined'
 import TrackChangesOutlinedIcon from '@mui/icons-material/TrackChangesOutlined'
@@ -78,8 +78,9 @@ function SidebarContent({ collapsed, onToggleCollapse, showCollapseToggle }: Sid
         </Box>
 
         <Typography
+          className={BRAND_WORDMARK_CLASS}
           sx={{
-            fontSize: 18, fontWeight: 600, color: '#1C1917', letterSpacing: '-0.4px', flex: 1,
+            fontSize: 19, fontWeight: 700, color: '#1B3A6B', letterSpacing: '-0.2px', flex: 1,
             whiteSpace: 'nowrap', overflow: 'hidden', minWidth: 0,
             opacity: collapsed ? 0 : 1,
             transition: 'opacity 0.12s ease',

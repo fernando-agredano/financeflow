@@ -10,7 +10,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
 import AddIcon from '@mui/icons-material/Add'
-import { BrandMark, BRAND_ACCENT_TEXT_SX } from './BrandMark'
+import { BrandMark, BRAND_ACCENT_TEXT_SX, BRAND_WORDMARK_CLASS } from './BrandMark'
 import Link from 'next/link'
 import { getPrevMonths, formatMonth } from '@/lib/finance'
 import { useMemo } from 'react'
@@ -43,8 +43,9 @@ export function Navbar({ onAddTransaction, onMenuClick }: NavbarProps) {
           >
             <BrandMark size={30} />
             <Typography
+              className={BRAND_WORDMARK_CLASS}
               sx={{
-                fontSize: 17, fontWeight: 600, color: '#1C1917', letterSpacing: '-0.4px',
+                fontSize: 18, fontWeight: 700, color: '#1B3A6B', letterSpacing: '-0.2px',
                 whiteSpace: 'nowrap', overflow: 'hidden',
                 display: { xs: 'none', sm: 'block' },
               }}

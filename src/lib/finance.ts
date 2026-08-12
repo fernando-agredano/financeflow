@@ -3,18 +3,18 @@ import autoTable from 'jspdf-autotable'
 import type { Category, Transaction } from '@/types/finance'
 
 export const CATEGORIES: Category[] = [
-  { id: 'trabajo',        name: 'Trabajo',        type: 'income',  icon: 'Work',            color: '#1A6B45' },
-  { id: 'inversiones',    name: 'Inversiones',    type: 'income',  icon: 'TrendingUp',      color: '#2952A3' },
-  { id: 'freelance',      name: 'Freelance',      type: 'income',  icon: 'Laptop',          color: '#1B3A6B' },
-  { id: 'otros-ingresos', name: 'Otros ingresos', type: 'income',  icon: 'AddCircle',       color: '#6B5A1B' },
+  { id: 'trabajo',        name: 'Trabajo',        type: 'income',  icon: 'Work',            color: '#059669' },
+  { id: 'inversiones',    name: 'Inversiones',    type: 'income',  icon: 'TrendingUp',      color: '#2563EB' },
+  { id: 'freelance',      name: 'Freelance',      type: 'income',  icon: 'Laptop',          color: '#0D9488' },
+  { id: 'otros-ingresos', name: 'Otros ingresos', type: 'income',  icon: 'AddCircle',       color: '#16A34A' },
   { id: 'vivienda',       name: 'Vivienda',       type: 'expense', icon: 'Home',            color: '#1B3A6B' },
-  { id: 'alimentacion',   name: 'Alimentación',   type: 'expense', icon: 'ShoppingCart',    color: '#2952A3' },
-  { id: 'transporte',     name: 'Transporte',     type: 'expense', icon: 'DirectionsCar',   color: '#7A5A00' },
-  { id: 'entretenimiento',name: 'Entretenimiento',type: 'expense', icon: 'Movie',           color: '#6B1B1B' },
-  { id: 'salud',          name: 'Salud',          type: 'expense', icon: 'LocalHospital',   color: '#1A5A3A' },
-  { id: 'educacion',      name: 'Educación',      type: 'expense', icon: 'School',          color: '#3A1B6B' },
-  { id: 'ropa',           name: 'Ropa',           type: 'expense', icon: 'Checkroom',       color: '#6B3A1B' },
-  { id: 'otros-gastos',   name: 'Otros gastos',   type: 'expense', icon: 'MoreHoriz',       color: '#5A5A5A' },
+  { id: 'alimentacion',   name: 'Alimentación',   type: 'expense', icon: 'ShoppingCart',    color: '#D97706' },
+  { id: 'transporte',     name: 'Transporte',     type: 'expense', icon: 'DirectionsCar',   color: '#0EA5E9' },
+  { id: 'entretenimiento',name: 'Entretenimiento',type: 'expense', icon: 'Movie',           color: '#DC2626' },
+  { id: 'salud',          name: 'Salud',          type: 'expense', icon: 'LocalHospital',   color: '#0369A1' },
+  { id: 'educacion',      name: 'Educación',      type: 'expense', icon: 'School',          color: '#06B6D4' },
+  { id: 'ropa',           name: 'Ropa',           type: 'expense', icon: 'Checkroom',       color: '#EA580C' },
+  { id: 'otros-gastos',   name: 'Otros gastos',   type: 'expense', icon: 'MoreHoriz',       color: '#64748B' },
 ]
 
 export const getCategoryById = (id: string) =>

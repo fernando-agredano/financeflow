@@ -1,35 +1,45 @@
 'use client'
 
-import Box from '@mui/material/Box'
+import { Quicksand } from 'next/font/google'
+
+const quicksand = Quicksand({ subsets: ['latin'], weight: ['600', '700'] })
 
 interface BrandMarkProps {
   size?: number
 }
 
-/** The FinanceFlow mark: a flat navy tile with a bold "F" monogram. */
+/**
+ * The FinanceFlow mark: a rising flow line with a highlighted peak — no
+ * filled tile behind it, just the line itself against the page background.
+ */
 export function BrandMark({ size = 34 }: BrandMarkProps) {
-  const fontSize = Math.round(size * 0.5)
+  const strokeWidth = size * 0.1
+  const dotRadius = size * 0.1
 
   return (
-    <Box
-      sx={{
-        width: size, height: size, borderRadius: size >= 32 ? '11px' : '9px',
-        background: '#1B3A6B',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-      }}
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 34 34"
+      fill="none"
+      aria-hidden="true"
+      style={{ flexShrink: 0 }}
     >
-      <Box
-        component="span"
-        aria-hidden="true"
-        sx={{ fontSize, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.5px', color: '#FEFCF8' }}
-      >
-        F
-      </Box>
-    </Box>
+      <path
+        d="M4 25C8 25 9 17 13 17C16.5 17 17.5 22 21.5 22C25 22 27 13 30 7"
+        stroke="#1B3A6B"
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx={30} cy={7} r={dotRadius} fill="#059669" />
+    </svg>
   )
 }
 
+export const BRAND_WORDMARK_CLASS = quicksand.className
+
 export const BRAND_ACCENT_TEXT_SX = {
   fontWeight: 700,
-  color: '#1B3A6B',
+  color: '#059669',
 } as const

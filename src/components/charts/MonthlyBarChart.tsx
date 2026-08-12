@@ -45,8 +45,8 @@ export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
           wrapperStyle={{ fontSize: 11, color: '#9C9589', paddingTop: 8 }}
           formatter={(v) => v === 'income' ? 'Ingresos' : 'Gastos'}
         />
-        <Bar dataKey="income" name="income" fill="#2952A3" radius={[3, 3, 0, 0]} maxBarSize={24} />
-        <Bar dataKey="expense" name="expense" fill="#C9B99A" radius={[3, 3, 0, 0]} maxBarSize={24} />
+        <Bar dataKey="income" name="income" fill="#059669" radius={[3, 3, 0, 0]} maxBarSize={24} />
+        <Bar dataKey="expense" name="expense" fill="#2563EB" radius={[3, 3, 0, 0]} maxBarSize={24} />
       </BarChart>
     </ResponsiveContainer>
   )

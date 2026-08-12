@@ -66,8 +66,8 @@ export function RecentTransactions({ transactions }: { transactions: Transaction
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, py: 1.1 }}>
                       <Box sx={{
                         width: 32, height: 32, borderRadius: '9px', flexShrink: 0,
-                        background: isIncome ? '#E8F5EE' : '#1B3A6B14',
-                        color: isIncome ? '#1A6B45' : '#1B3A6B',
+                        background: isIncome ? '#E3F6EC' : '#1B3A6B14',
+                        color: isIncome ? '#059669' : '#1B3A6B',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}>
                         {icon}
@@ -80,7 +80,7 @@ export function RecentTransactions({ transactions }: { transactions: Transaction
                           {formatDate(tx.date)} · {cat?.name ?? tx.categoryId}
                         </Typography>
                       </Box>
-                      <Typography sx={{ fontSize: 13, fontWeight: 500, color: isIncome ? '#1A6B45' : '#8B2020', flexShrink: 0 }}>
+                      <Typography sx={{ fontSize: 13, fontWeight: 500, color: isIncome ? '#059669' : '#8B2020', flexShrink: 0 }}>
                         {isIncome ? '+' : '-'}{formatCurrency(tx.amount)}
                       </Typography>
                     </Box>
