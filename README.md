@@ -1,84 +1,84 @@
 # FinanceFlow
 
-**FinanceFlow** es una aplicación web de finanzas personales construida con **Next.js 16**, **React 19** y **Material UI**, con persistencia 100% local mediante **IndexedDB** (a través de Dexie.js). Permite registrar ingresos y gastos, definir presupuestos mensuales por categoría, visualizar tendencias con gráficas, y exportar reportes en CSV y PDF con un diseño formal tipo estado de cuenta.
+**FinanceFlow** is a personal finance web application built with **Next.js 16**, **React 19**, and **Material UI**, with 100% local persistence via **IndexedDB** (through Dexie.js). It lets you record income and expenses, set monthly budgets per category, visualize trends with charts, and export reports as CSV and PDF with a formal statement-style design.
 
-No requiere backend, base de datos remota ni autenticación: todos los datos viven en el navegador del usuario.
+It requires no backend, no remote database, and no authentication: all data lives in the user's browser.
 
 ---
 
-## Tabla de contenidos
+## Table of Contents
 
-- [Vista previa](#vista-previa)
-- [Características principales](#características-principales)
-- [Stack tecnológico](#stack-tecnológico)
-- [Arquitectura](#arquitectura)
-  - [Modelo de datos y persistencia](#modelo-de-datos-y-persistencia)
-  - [Estructura de carpetas](#estructura-de-carpetas)
-  - [Capas de la aplicación](#capas-de-la-aplicación)
-  - [Gestión de estado global](#gestión-de-estado-global)
-  - [Sistema de diseño (theming)](#sistema-de-diseño-theming)
+- [Preview](#preview)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+  - [Data Model and Persistence](#data-model-and-persistence)
+  - [Folder Structure](#folder-structure)
+  - [Application Layers](#application-layers)
+  - [Global State Management](#global-state-management)
+  - [Design System (Theming)](#design-system-theming)
   - [Layout shell: Sidebar + Navbar](#layout-shell-sidebar--navbar)
-  - [Exportación a PDF](#exportación-a-pdf)
-  - [Diseño responsivo](#diseño-responsivo)
-- [Páginas de la aplicación](#páginas-de-la-aplicación)
-- [Puesta en marcha](#puesta-en-marcha)
-- [Scripts disponibles](#scripts-disponibles)
-- [Categorías predefinidas](#categorías-predefinidas)
-- [Decisiones de diseño y limitaciones conocidas](#decisiones-de-diseño-y-limitaciones-conocidas)
+  - [PDF Export](#pdf-export)
+  - [Responsive Design](#responsive-design)
+- [Application Pages](#application-pages)
+- [Getting Started](#getting-started)
+- [Available Scripts](#available-scripts)
+- [Predefined Categories](#predefined-categories)
+- [Design Decisions and Known Limitations](#design-decisions-and-known-limitations)
 
 ---
 
-## Vista previa
+## Preview
 
 | Desktop | Mobile |
 | --- | --- |
-| ![Dashboard en escritorio](docs/screenshots/preview-desktop.png) | ![Dashboard en móvil](docs/screenshots/preview-mobile.png) |
+| ![Dashboard on desktop](docs/screenshots/preview-desktop.png) | ![Dashboard on mobile](docs/screenshots/preview-mobile.png) |
 
-El layout es completamente responsivo: el sidebar de navegación es persistente y retráctil en escritorio, y se convierte en un drawer deslizable en móvil; las tablas se reorganizan en tarjetas apiladas y las grillas de tarjetas pasan de 4 columnas a 1–2 según el ancho disponible.
-
----
-
-## Características principales
-
-- **Dashboard** con tarjetas resumen (ingresos, gastos, balance, tasa de ahorro), gráfica de tendencia de 6 meses, distribución de gastos por categoría, movimientos recientes y progreso de presupuestos del mes — todo en una sola vista.
-- **Movimientos**: alta de ingresos/gastos con validación (Zod + React Hook Form), filtros por tipo/categoría/rango de fechas/texto, tabla paginada (12 registros por página) sin scroll de página.
-- **Presupuestos**: límites mensuales por categoría con barra de progreso, estado "excedido"/"cerca del límite", y alta con modal de confirmación.
-- **Reportes**: tendencia de 6 meses, distribución de gastos y top 5 categorías de gasto.
-- **Exportación**:
-  - **CSV** plano, listo para abrir en Excel/Sheets.
-  - **PDF formal tipo estado de cuenta**, generado 100% en el cliente con `jsPDF` + `jspdf-autotable`: membrete con folio y fecha de emisión, resumen, dos gráficas vectoriales (tendencia mensual y top categorías dibujadas a mano con primitivas de `jsPDF`, sin capturas de pantalla), tabla de detalle paginada automáticamente y total final estilo factura.
-- **Modales de confirmación** antes de guardar un movimiento o presupuesto, con un resumen coloreado (verde/rojo/azul) de lo que se va a guardar.
-- **Toasts dinámicos** (Snackbar + Alert de MUI, tematizados) que confirman la acción con el detalle del movimiento/presupuesto agregado.
-- **Selector de mes global** (Context de React) que filtra Dashboard, Presupuestos y Reportes de forma sincronizada.
-- **Sidebar retráctil** con transición fluida, iconos que nunca se desplazan al colapsar/expandir, y persistencia de la preferencia en `localStorage`.
-- **Sin scroll de página**: el shell de la aplicación ocupa exactamente el alto del viewport; el contenido que no cabe se desplaza dentro de su propio contenedor, nunca en la ventana.
-- **Tema visual propio**: paleta cálida (crema/navy/dorado), sin los patrones genéricos de Material UI por defecto — colores, tipografía, radios y sombras centralizados en un único archivo de tema.
+The layout is fully responsive: the navigation sidebar is persistent and collapsible on desktop, and turns into a sliding drawer on mobile; tables reorganize into stacked cards, and card grids go from 4 columns down to 1–2 depending on the available width.
 
 ---
 
-## Stack tecnológico
+## Key Features
 
-| Categoría | Tecnología | Uso |
+- **Dashboard** with summary cards (income, expenses, balance, savings rate), a 6-month trend chart, expense distribution by category, recent transactions, and monthly budget progress — all in a single view.
+- **Transactions**: adding income/expenses with validation (Zod + React Hook Form), filters by type/category/date range/text, a paginated table (12 records per page) with no page scroll.
+- **Budgets**: monthly limits per expense category with a progress bar, "exceeded"/"near limit" status, and creation with a confirmation modal.
+- **Reports**: 6-month trend, expense distribution, and top 5 expense categories.
+- **Export**:
+  - Plain **CSV**, ready to open in Excel/Sheets.
+  - **Formal statement-style PDF**, generated 100% client-side with `jsPDF` + `jspdf-autotable`: letterhead with folio number and issue date, a summary, two vector charts (monthly trend and top categories drawn by hand with `jsPDF` primitives, no screenshots), an automatically paginated detail table, and an invoice-style final total.
+- **Confirmation modals** before saving a transaction or budget, with a color-coded summary (green/red/blue) of what is about to be saved.
+- **Dynamic toasts** (MUI's Snackbar + Alert, themed) confirming the action with details of the transaction/budget that was added.
+- **Global month selector** (React Context) that filters the Dashboard, Budgets, and Reports in sync.
+- **Collapsible sidebar** with a smooth transition, icons that never shift when collapsing/expanding, and the preference persisted in `localStorage`.
+- **No page scroll**: the application shell occupies exactly the height of the viewport; content that doesn't fit scrolls within its own container, never the window.
+- **Custom visual theme**: a warm palette (cream/navy/gold), free of Material UI's generic default patterns — colors, typography, radii, and shadows centralized in a single theme file.
+
+---
+
+## Tech Stack
+
+| Category | Technology | Purpose |
 | --- | --- | --- |
-| Framework | [Next.js 16](https://nextjs.org/) (App Router, Turbopack) | Enrutamiento y build |
-| UI | [React 19](https://react.dev/) | Componentes |
-| Librería de componentes | [MUI 9](https://mui.com/) (`@mui/material`, `@mui/icons-material`) | Sistema de diseño base |
-| Estilos | Emotion (motor de estilos de MUI) | CSS-in-JS |
-| Persistencia | [Dexie.js](https://dexie.org/) sobre IndexedDB | Base de datos local en el navegador |
-| Formularios | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) (`@hookform/resolvers`) | Validación de formularios |
-| Gráficas (UI) | [Recharts](https://recharts.org/) | Barras y dona en el Dashboard/Reportes |
-| Exportación | [jsPDF](https://github.com/parallax/jsPDF) + [jspdf-autotable](https://github.com/simonbengtsson/jsPDF-AutoTable) | Generación de PDF en el cliente |
-| Fechas | [date-fns](https://date-fns.org/) | Utilidades de fecha (dependencia disponible; formateo principal vía `Intl`) |
-| Lenguaje | TypeScript 5 (`strict: true`) | Tipado estático |
-| Linting | ESLint 9 (`eslint-config-next`) | Calidad de código |
+| Framework | [Next.js 16](https://nextjs.org/) (App Router, Turbopack) | Routing and build |
+| UI | [React 19](https://react.dev/) | Components |
+| Component library | [MUI 9](https://mui.com/) (`@mui/material`, `@mui/icons-material`) | Base design system |
+| Styling | Emotion (MUI's styling engine) | CSS-in-JS |
+| Persistence | [Dexie.js](https://dexie.org/) on top of IndexedDB | Local database in the browser |
+| Forms | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) (`@hookform/resolvers`) | Form validation |
+| Charts (UI) | [Recharts](https://recharts.org/) | Bars and donut chart on the Dashboard/Reports |
+| Export | [jsPDF](https://github.com/parallax/jsPDF) + [jspdf-autotable](https://github.com/simonbengtsson/jsPDF-AutoTable) | Client-side PDF generation |
+| Dates | [date-fns](https://date-fns.org/) | Date utilities (dependency available; primary formatting via `Intl`) |
+| Language | TypeScript 5 (`strict: true`) | Static typing |
+| Linting | ESLint 9 (`eslint-config-next`) | Code quality |
 
 ---
 
-## Arquitectura
+## Architecture
 
-### Modelo de datos y persistencia
+### Data Model and Persistence
 
-FinanceFlow **no tiene backend**. Toda la información se guarda directamente en el navegador usando **IndexedDB**, envuelta por Dexie.js para dar una API tipo ORM con consultas reactivas.
+FinanceFlow **has no backend**. All information is saved directly in the browser using **IndexedDB**, wrapped by Dexie.js to provide an ORM-like API with reactive queries.
 
 ```ts
 // src/lib/db.ts
@@ -88,11 +88,11 @@ class FinanceDB extends Dexie {
 }
 ```
 
-Las consultas se consumen mediante `dexie-react-hooks` (`useLiveQuery`), lo que significa que **cualquier cambio en la base de datos re-renderiza automáticamente** a todos los componentes suscritos, sin necesidad de un store global tipo Redux/Zustand. Esto es lo que permite, por ejemplo, que al agregar un movimiento el Dashboard, los Reportes y la tabla de Movimientos se actualicen todos al instante.
+Queries are consumed via `dexie-react-hooks` (`useLiveQuery`), which means **any change to the database automatically re-renders** every subscribed component, without needing a global store like Redux/Zustand. This is what allows, for example, adding a transaction to instantly update the Dashboard, Reports, and the Transactions table all at once.
 
-Al iniciar la app por primera vez (`Providers.tsx` → `seedIfEmpty()`), la base de datos se puebla con datos de ejemplo (movimientos y presupuestos del mes actual y anterior) para que el usuario vea la app funcionando sin pasos previos.
+The first time the app starts (`Providers.tsx` → `seedIfEmpty()`), the database is seeded with sample data (transactions and budgets for the current and previous month) so the user can see the app working without any prior setup.
 
-**Entidades:**
+**Entities:**
 
 ```ts
 type TransactionType = 'income' | 'expense'
@@ -124,89 +124,89 @@ interface Category {
 }
 ```
 
-La validación de entrada (formularios) se hace con esquemas de **Zod** (`src/lib/schemas.ts`), incluyendo coerción de tipos (`z.coerce.number()`) para que los inputs HTML —que siempre entregan strings— se conviertan a número de forma segura antes de guardarse.
+Input validation (forms) is handled with **Zod** schemas (`src/lib/schemas.ts`), including type coercion (`z.coerce.number()`) so that HTML inputs — which always return strings — are safely converted to numbers before being saved.
 
-### Estructura de carpetas
+### Folder Structure
 
 ```
 src/
 ├── app/                        # Next.js App Router
-│   ├── layout.tsx              # Shell raíz: Sidebar + Navbar + <main>, providers globales
+│   ├── layout.tsx              # Root shell: Sidebar + Navbar + <main>, global providers
 │   ├── page.tsx                # Dashboard ("/")
-│   ├── globals.css             # Reset + bloqueo de scroll de ventana
-│   ├── transactions/page.tsx   # Movimientos (tabla paginada, filtros, export CSV/PDF)
-│   ├── budgets/page.tsx        # Presupuestos (alta + tarjetas de progreso)
-│   └── reports/page.tsx        # Reportes (tendencias y top categorías)
+│   ├── globals.css             # Reset + window scroll lock
+│   ├── transactions/page.tsx   # Transactions (paginated table, filters, CSV/PDF export)
+│   ├── budgets/page.tsx        # Budgets (creation + progress cards)
+│   └── reports/page.tsx        # Reports (trends and top categories)
 │
 ├── components/
 │   ├── layout/
-│   │   ├── Sidebar.tsx          # Nav lateral retráctil (desktop) + Drawer (mobile)
-│   │   ├── Navbar.tsx           # Header: menú móvil, selector de mes, botón "Agregar"
-│   │   ├── BrandMark.tsx        # Logo/wordmark reutilizable (monograma "F")
-│   │   └── Providers.tsx        # ThemeProvider + ToastProvider + MonthProvider + seed de datos
+│   │   ├── Sidebar.tsx          # Collapsible side nav (desktop) + Drawer (mobile)
+│   │   ├── Navbar.tsx           # Header: mobile menu, month selector, "Add" button
+│   │   ├── BrandMark.tsx        # Reusable logo/wordmark (monogram "F")
+│   │   └── Providers.tsx        # ThemeProvider + ToastProvider + MonthProvider + data seeding
 │   ├── dashboard/
-│   │   ├── SummaryCards.tsx     # 4 tarjetas: ingresos, gastos, balance, tasa de ahorro
+│   │   ├── SummaryCards.tsx     # 4 cards: income, expenses, balance, savings rate
 │   │   ├── RecentTransactions.tsx
 │   │   └── BudgetProgress.tsx
 │   ├── charts/
-│   │   ├── MonthlyBarChart.tsx  # Recharts: barras ingresos vs gastos
-│   │   └── CategoryPieChart.tsx # Recharts: dona de gastos por categoría
+│   │   ├── MonthlyBarChart.tsx  # Recharts: income vs. expense bars
+│   │   └── CategoryPieChart.tsx # Recharts: expense-by-category donut
 │   ├── transactions/
-│   │   ├── TransactionForm.tsx  # Formulario + flujo de confirmación + toast
-│   │   └── TransactionModal.tsx # Dialog contenedor del formulario
+│   │   ├── TransactionForm.tsx  # Form + confirmation flow + toast
+│   │   └── TransactionModal.tsx # Dialog container for the form
 │   └── common/
-│       └── ConfirmDialog.tsx     # Modal de confirmación genérico y reutilizable
+│       └── ConfirmDialog.tsx     # Generic, reusable confirmation modal
 │
 ├── hooks/
-│   ├── useFinance.ts            # Queries reactivas (Dexie) + acciones CRUD
-│   ├── useMonth.tsx             # Context: mes seleccionado, compartido en toda la app
-│   └── useToast.tsx             # Context: sistema de notificaciones (Snackbar/Alert)
+│   ├── useFinance.ts            # Reactive queries (Dexie) + CRUD actions
+│   ├── useMonth.tsx             # Context: selected month, shared across the app
+│   └── useToast.tsx             # Context: notification system (Snackbar/Alert)
 │
 ├── lib/
-│   ├── db.ts                    # Definición de la base de datos Dexie + seed
-│   ├── finance.ts               # Categorías, formatters, exportToCSV, exportToPDF
-│   ├── schemas.ts                # Esquemas Zod (transacción, presupuesto)
-│   └── theme.ts                  # Tema de MUI centralizado (paleta, tipografía, overrides)
+│   ├── db.ts                    # Dexie database definition + seeding
+│   ├── finance.ts               # Categories, formatters, exportToCSV, exportToPDF
+│   ├── schemas.ts                # Zod schemas (transaction, budget)
+│   └── theme.ts                  # Centralized MUI theme (palette, typography, overrides)
 │
 └── types/
-    └── finance.ts                # Tipos compartidos (Transaction, Budget, Category, ...)
+    └── finance.ts                # Shared types (Transaction, Budget, Category, ...)
 ```
 
-### Capas de la aplicación
+### Application Layers
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  Páginas (app/*)                                         │
-│  Orquestan hooks + componentes, sin lógica de negocio     │
+│  Pages (app/*)                                            │
+│  Orchestrate hooks + components, no business logic        │
 └───────────────┬───────────────────────────┬───────────────┘
                 │                           │
 ┌───────────────▼───────────────┐ ┌─────────▼─────────────┐
-│  Componentes (components/*)    │ │  Hooks (hooks/*)        │
-│  Presentación + interacción     │ │  Estado + acceso a datos│
+│  Components (components/*)     │ │  Hooks (hooks/*)        │
+│  Presentation + interaction     │ │  State + data access   │
 └───────────────┬───────────────┘ └─────────┬─────────────┘
                 │                           │
 ┌───────────────▼───────────────────────────▼───────────────┐
 │  lib/finance.ts, lib/schemas.ts                            │
-│  Reglas de negocio: formatos, validación, export            │
+│  Business rules: formatting, validation, export             │
 └───────────────┬─────────────────────────────────────────────┘
                 │
 ┌───────────────▼─────────────────────────────────────────────┐
-│  lib/db.ts (Dexie) → IndexedDB del navegador                 │
+│  lib/db.ts (Dexie) → browser IndexedDB                       │
 └───────────────────────────────────────────────────────────────┘
 ```
 
-No existe una capa de API/red: cada página llama directamente a los hooks de `useFinance.ts`, que a su vez leen/escriben en Dexie. Esto simplifica enormemente el flujo de datos a costa de que la información no se sincroniza entre dispositivos (ver [limitaciones conocidas](#decisiones-de-diseño-y-limitaciones-conocidas)).
+There is no API/network layer: each page calls the `useFinance.ts` hooks directly, which in turn read/write to Dexie. This greatly simplifies the data flow at the cost of not syncing data across devices (see [known limitations](#design-decisions-and-known-limitations)).
 
-### Gestión de estado global
+### Global State Management
 
-En vez de una librería de estado (Redux, Zustand, etc.), la app usa **dos Contexts de React**, cada uno con una responsabilidad puntual:
+Instead of a state management library (Redux, Zustand, etc.), the app uses **two React Contexts**, each with a single, focused responsibility:
 
-| Context | Archivo | Responsabilidad |
+| Context | File | Responsibility |
 | --- | --- | --- |
-| `MonthProvider` / `useMonth()` | `hooks/useMonth.tsx` | Mes seleccionado en el Navbar; consumido por Dashboard, Presupuestos y Reportes para filtrar sus datos de forma sincronizada. |
-| `ToastProvider` / `useToast()` | `hooks/useToast.tsx` | Cola de notificaciones tipo Snackbar; expone `showToast({ message, description, severity })` a cualquier componente. |
+| `MonthProvider` / `useMonth()` | `hooks/useMonth.tsx` | Month selected in the Navbar; consumed by the Dashboard, Budgets, and Reports to filter their data in sync. |
+| `ToastProvider` / `useToast()` | `hooks/useToast.tsx` | Queue of Snackbar-style notifications; exposes `showToast({ message, description, severity })` to any component. |
 
-Ambos se montan una sola vez en `components/layout/Providers.tsx`, envolviendo toda la aplicación:
+Both are mounted once in `components/layout/Providers.tsx`, wrapping the entire application:
 
 ```tsx
 <ThemeProvider theme={theme}>
@@ -217,31 +217,31 @@ Ambos se montan una sola vez en `components/layout/Providers.tsx`, envolviendo t
 </ThemeProvider>
 ```
 
-El resto del estado (filtros de la tabla de movimientos, paginación, formularios, estado de apertura de modales) es local a cada componente vía `useState`, ya que no necesita compartirse entre pantallas.
+The rest of the state (transaction table filters, pagination, forms, modal open/close state) is local to each component via `useState`, since it doesn't need to be shared across screens.
 
-### Sistema de diseño (theming)
+### Design System (Theming)
 
-Todo el look & feel vive en **un único archivo**, `src/lib/theme.ts`, que extiende el tema por defecto de MUI (`createTheme`) con:
+The entire look & feel lives in **a single file**, `src/lib/theme.ts`, which extends MUI's default theme (`createTheme`) with:
 
-- **Paleta propia** (crema/navy/dorado) en vez de los azules/morados por defecto de MUI:
+- **A custom palette** (cream/navy/gold) instead of MUI's default blues/purples:
 
-  | Token | Color | Uso |
+  | Token | Color | Usage |
   | --- | --- | --- |
-  | `primary` | `#1B3A6B` (navy) | Marca, botones principales, acentos |
-  | `background.default` | `#F5F0E8` (crema) | Fondo de la app |
-  | `background.paper` | `#FEFCF8` | Tarjetas, diálogos |
-  | `success` | `#1A6B45` | Ingresos, confirmaciones |
-  | `error` | `#8B2020` | Gastos, errores |
-  | `divider` | `#DDD8CE` | Bordes sutiles |
+  | `primary` | `#1B3A6B` (navy) | Brand, primary buttons, accents |
+  | `background.default` | `#F5F0E8` (cream) | App background |
+  | `background.paper` | `#FEFCF8` | Cards, dialogs |
+  | `success` | `#1A6B45` | Income, confirmations |
+  | `error` | `#8B2020` | Expenses, errors |
+  | `divider` | `#DDD8CE` | Subtle borders |
 
-- **`styleOverrides` por componente** (`MuiCard`, `MuiButton`, `MuiChip`, `MuiDialog`, `MuiAlert`, etc.) para que cada instancia de un componente de MUI en toda la app comparta radios de borde, sombras y tipografía sin repetir `sx` en cada uso.
-- **Tipografía**: Inter (vía `next/font/google`) con pesos y `letter-spacing` ajustados para que se sienta como un producto propio, no una plantilla genérica.
+- **Per-component `styleOverrides`** (`MuiCard`, `MuiButton`, `MuiChip`, `MuiDialog`, `MuiAlert`, etc.) so that every instance of an MUI component across the app shares border radii, shadows, and typography without repeating `sx` on each use.
+- **Typography**: Inter (via `next/font/google`) with weights and `letter-spacing` tuned to feel like a bespoke product rather than a generic template.
 
-Este enfoque centralizado es lo que permitió, por ejemplo, estandarizar de un solo cambio el tamaño de fuente de todos los inputs (`MuiInputBase`) cuando se detectó inconsistencia entre páginas.
+This centralized approach is what made it possible, for example, to standardize the font size of all inputs (`MuiInputBase`) with a single change when an inconsistency was spotted across pages.
 
 ### Layout shell: Sidebar + Navbar
 
-El shell de la aplicación (`app/layout.tsx`) arma una estructura de **altura fija igual al viewport**, sin scroll de ventana:
+The application shell (`app/layout.tsx`) builds a structure with a **fixed height equal to the viewport**, with no window scroll:
 
 ```
 ┌──────────┬──────────────────────────────┐
@@ -250,76 +250,76 @@ El shell de la aplicación (`app/layout.tsx`) arma una estructura de **altura fi
 │ (persist.│                                │
 │  md+ /   │  <main> — flex:1               │
 │  drawer  │  overflow-y: auto              │
-│  en xs)  │  (contenido de cada página)    │
+│  on xs)  │  (content of each page)        │
 │          │                                │
 └──────────┴──────────────────────────────┘
 ```
 
-- **Sidebar** (`Sidebar.tsx`): persistente en `md+`, retráctil (232px ↔ 76px) con una transición de `width` — los íconos viven en un **slot de tamaño fijo** que nunca cambia entre estados, así que solo el texto aparece/desaparece con opacidad; nada "salta". En móvil se oculta y se reemplaza por un `Drawer` temporal disparado desde el ícono de menú del Navbar. El estado colapsado/expandido persiste en `localStorage`.
-- **Navbar** (`Navbar.tsx`): sticky, con el selector de mes global y el botón "Agregar movimiento". En móvil se compacta (oculta el texto de marca, angosta el selector, deja el botón de agregar como solo-ícono) para no desbordar pantallas pequeñas.
-- **`<main>`**: es el **único contenedor con scroll** de toda la app (`overflow-y: auto`, `flex: 1`, `min-height: 0`). El `<body>` y el `<html>` tienen `overflow: hidden` — de ahí que la app nunca "rebote" ni muestre franjas en blanco al hacer scroll con trackpad.
-- La página de **Movimientos** además fija su propia altura a `calc(100vh - 58px)` y pagina la tabla (12 filas), así ni siquiera su contenedor interno necesita scroll en el caso normal.
+- **Sidebar** (`Sidebar.tsx`): persistent on `md+`, collapsible (232px ↔ 76px) with a `width` transition — icons live in a **fixed-size slot** that never changes between states, so only the text appears/disappears via opacity; nothing "jumps." On mobile it's hidden and replaced by a temporary `Drawer` triggered from the Navbar's menu icon. The collapsed/expanded state persists in `localStorage`.
+- **Navbar** (`Navbar.tsx`): sticky, with the global month selector and the "Add transaction" button. On mobile it compacts (hides the brand text, narrows the selector, reduces the add button to an icon-only button) to avoid overflowing small screens.
+- **`<main>`**: is the **only scrollable container** in the entire app (`overflow-y: auto`, `flex: 1`, `min-height: 0`). `<body>` and `<html>` have `overflow: hidden` — which is why the app never "bounces" or shows blank strips when scrolling with a trackpad.
+- The **Transactions** page additionally fixes its own height to `calc(100vh - 58px)` and paginates the table (12 rows), so even its internal container doesn't need to scroll in the normal case.
 
-### Exportación a PDF
+### PDF Export
 
-`exportToPDF()` (en `lib/finance.ts`) genera un PDF **completamente en el navegador**, sin llamadas a un servidor, usando `jsPDF` para dibujar directamente con primitivas vectoriales (rectángulos, líneas, texto) y `jspdf-autotable` para la tabla de detalle. El documento sigue un formato de **estado de cuenta / factura**:
+`exportToPDF()` (in `lib/finance.ts`) generates a PDF **entirely in the browser**, with no server calls, using `jsPDF` to draw directly with vector primitives (rectangles, lines, text) and `jspdf-autotable` for the detail table. The document follows a **statement/invoice-style** format:
 
-1. Membrete con marca, folio autogenerado (`FF-YYYYMMDD-HHMM`) y fecha de emisión.
-2. Franja de metadatos: periodo cubierto, número de movimientos, saldo neto.
-3. Resumen con bordes finos: ingresos / gastos / balance.
-4. **Dos gráficas dibujadas a mano** (sin capturar pantalla ni convertir imágenes): barras agrupadas de ingresos vs. gastos por mes, y barras horizontales del top 5 de categorías de gasto — usando los mismos colores de categoría que la UI.
-5. Tabla de detalle con paginación automática entre hojas.
-6. Total final estilo factura (ingresos, gastos, balance) en la última página.
-7. Pie de página con "Página X de Y" en cada hoja.
+1. Letterhead with the brand, an auto-generated folio number (`FF-YYYYMMDD-HHMM`), and the issue date.
+2. Metadata strip: period covered, number of transactions, net balance.
+3. Summary with thin borders: income / expenses / balance.
+4. **Two hand-drawn charts** (no screenshots or image conversion involved): grouped bars of income vs. expenses per month, and horizontal bars for the top 5 expense categories — using the same category colors as the UI.
+5. Detail table with automatic pagination across sheets.
+6. Invoice-style final total (income, expenses, balance) on the last page.
+7. Footer with "Page X of Y" on every sheet.
 
-`exportToCSV()` genera, en cambio, un CSV plano con BOM UTF-8 para abrir correctamente acentos en Excel.
+`exportToCSV()`, on the other hand, generates a plain CSV with a UTF-8 BOM so accented characters open correctly in Excel.
 
-### Diseño responsivo
+### Responsive Design
 
-Breakpoints de MUI usados: `xs` (<600px, móvil), `sm` (600–900px), `md` (≥900px, donde aparece el sidebar persistente). Patrones aplicados de forma consistente en toda la app:
+MUI breakpoints used: `xs` (<600px, mobile), `sm` (600–900px), `md` (≥900px, where the persistent sidebar appears). Patterns applied consistently across the app:
 
-- **Grids de tarjetas** (`SummaryCards`, tarjetas de Dashboard, Presupuestos, Reportes) pasan de 4/2 columnas a 1 columna apilada en móvil mediante `gridTemplateColumns` responsivo.
-- **Tabla → tarjetas**: la tabla de Movimientos, con columnas de ancho fijo en píxeles, se reemplaza en móvil por tarjetas apiladas (descripción + monto arriba, categoría + fecha + eliminar abajo) en vez de comprimir columnas ilegibles.
-- **Formularios de filtros/alta** envuelven (`flexWrap`) y sus campos pasan a ancho completo en pantallas pequeñas.
-- **Diálogos** reducen su margen respecto al viewport en móvil para aprovechar mejor el espacio.
+- **Card grids** (`SummaryCards`, Dashboard/Budgets/Reports cards) go from 4/2 columns to a single stacked column on mobile via a responsive `gridTemplateColumns`.
+- **Table → cards**: the Transactions table, with fixed-pixel-width columns, is replaced on mobile by stacked cards (description + amount on top, category + date + delete below) instead of squeezing unreadable columns.
+- **Filter/creation forms** wrap (`flexWrap`) and their fields switch to full width on small screens.
+- **Dialogs** reduce their margin relative to the viewport on mobile to make better use of the space.
 
 ---
 
-## Páginas de la aplicación
+## Application Pages
 
-| Ruta | Página | Descripción |
+| Route | Page | Description |
 | --- | --- | --- |
-| `/` | Dashboard | Resumen del mes: tarjetas de KPIs, tendencia de 6 meses, distribución por categoría, movimientos recientes y progreso de presupuestos. |
-| `/transactions` | Movimientos | Alta, filtrado, paginación y exportación (CSV/PDF) de todos los movimientos. |
-| `/budgets` | Presupuestos | Definición de límites mensuales por categoría de gasto y seguimiento visual del consumo. |
-| `/reports` | Reportes | Tendencia de 6 meses, distribución de gastos y top 5 categorías con porcentaje del total. |
+| `/` | Dashboard | Monthly overview: KPI cards, 6-month trend, distribution by category, recent transactions, and budget progress. |
+| `/transactions` | Transactions | Creation, filtering, pagination, and export (CSV/PDF) of all transactions. |
+| `/budgets` | Budgets | Setting monthly limits per expense category and visually tracking consumption. |
+| `/reports` | Reports | 6-month trend, expense distribution, and top 5 categories with percentage of total. |
 
 ---
 
-## Puesta en marcha
+## Getting Started
 
-### Requisitos
+### Requirements
 
-- Node.js 20 o superior
-- npm (el proyecto incluye `package-lock.json`)
+- Node.js 20 or higher
+- npm (the project includes `package-lock.json`)
 
-### Instalación
+### Installation
 
 ```bash
-git clone <url-del-repositorio>
+git clone <repository-url>
 cd financeflow
 npm install
 ```
 
-### Desarrollo
+### Development
 
 ```bash
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000). El proyecto usa **Turbopack** como bundler de desarrollo (incluido en Next.js 16).
+Open [http://localhost:3000](http://localhost:3000). The project uses **Turbopack** as the development bundler (included in Next.js 16).
 
-### Producción
+### Production
 
 ```bash
 npm run build
@@ -328,31 +328,31 @@ npm run start
 
 ---
 
-## Scripts disponibles
+## Available Scripts
 
-| Script | Comando | Descripción |
+| Script | Command | Description |
 | --- | --- | --- |
-| `dev` | `next dev` | Servidor de desarrollo con hot-reload (Turbopack) |
-| `build` | `next build` | Build de producción |
-| `start` | `next start` | Sirve el build de producción |
-| `lint` | `eslint` | Linting del proyecto |
+| `dev` | `next dev` | Development server with hot-reload (Turbopack) |
+| `build` | `next build` | Production build |
+| `start` | `next start` | Serves the production build |
+| `lint` | `eslint` | Project linting |
 
-> El proyecto usa TypeScript en modo `strict`. Se recomienda correr `npx tsc --noEmit` antes de subir cambios grandes, ya que no hay un script `typecheck` dedicado.
-
----
-
-## Categorías predefinidas
-
-Definidas en `src/lib/finance.ts` (`CATEGORIES`), cada una con su propio color usado consistentemente en gráficas, chips y el PDF:
-
-**Ingresos:** Trabajo, Inversiones, Freelance, Otros ingresos
-**Gastos:** Vivienda, Alimentación, Transporte, Entretenimiento, Salud, Educación, Ropa, Otros gastos
+> The project uses TypeScript in `strict` mode. It's recommended to run `npx tsc --noEmit` before pushing large changes, since there isn't a dedicated `typecheck` script.
 
 ---
 
-## Decisiones de diseño y limitaciones conocidas
+## Predefined Categories
 
-- **Sin backend ni sincronización**: al vivir en IndexedDB, los datos son locales al navegador/dispositivo. Borrar datos del sitio o cambiar de navegador implica perder la información (no hay exportación/importación de la base completa, solo de reportes).
-- **Sin autenticación**: la app está pensada para uso personal en un solo dispositivo, no multiusuario.
-- **Un solo idioma** (español, `es-MX`) y una sola moneda (MXN) en los formatters de `lib/finance.ts`.
-- **Persistencia parcial de preferencias**: solo el estado colapsado/expandido del sidebar se guarda en `localStorage`; el mes seleccionado y los filtros se reinician al recargar la página.
+Defined in `src/lib/finance.ts` (`CATEGORIES`), each with its own color used consistently across charts, chips, and the PDF:
+
+**Income:** Salary, Investments, Freelance, Other income
+**Expenses:** Housing, Food, Transportation, Entertainment, Health, Education, Clothing, Other expenses
+
+---
+
+## Design Decisions and Known Limitations
+
+- **No backend or sync**: since data lives in IndexedDB, it is local to the browser/device. Clearing site data or switching browsers means losing the information (there is no export/import of the full database, only of reports).
+- **No authentication**: the app is intended for personal use on a single device, not multi-user.
+- **Single language** (Spanish, `es-MX`) and a single currency (MXN) in the formatters in `lib/finance.ts`.
+- **Partial persistence of preferences**: only the sidebar's collapsed/expanded state is saved to `localStorage`; the selected month and filters reset on page reload.
